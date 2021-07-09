@@ -33,5 +33,14 @@ export class UserTestDataService {
         .birthday(new Date(1985, 12, 12))
         .build()
     );
+
+    await this.userRepository.insert(
+      Builder<User>()
+        .firstName("Jaimito")
+        .lastName("bond")
+        .email("jaimito@bo.nd")
+        .birthday(new Date(1995, 12, 12))
+        .build()
+    );
   }
 }

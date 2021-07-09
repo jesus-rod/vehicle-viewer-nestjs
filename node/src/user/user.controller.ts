@@ -25,4 +25,16 @@ export class UserController {
     }
     return user;
   }
+
+  @Get("lastname/:lastname")
+  public async getUserByLastname(
+    @Param("lastname") lastname: string
+  ): Promise<User[]> {
+    const user = this.userService.getByLastname(lastname);
+    if (!user) {
+      throw new HttpException("User not found.", HttpStatus.NOT_FOUND);
+    }
+    console.log(user);
+    return user;
+  }
 }
