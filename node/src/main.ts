@@ -1,5 +1,7 @@
+import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { useContainer } from "class-validator";
 import { AppModule } from "./app.module";
 
 const sqlite3 = require("sqlite3").verbose();
@@ -28,15 +30,25 @@ db.serialize(async () => {
 });
 
 db.close(async () => {
-  const app = (await NestFactory.create(AppModule)).setGlobalPrefix("api/v1")
+  const app = (await NestFactory.create(AppModule)).setGlobalPrefix("api/v1");
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      forbidUnknownValues: true,
+      validationError: { target: false }
+    })
+  );
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const options = new DocumentBuilder()
-    .setTitle('Users and Vehicles')
-    .setDescription('API for managing users and vehicles')
-    .setVersion('1.0')
+    .setTitle("Users and Vehicles")
+    .setDescription("API for managing users and vehicles")
+    .setVersion("1.0")
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('swagger-ui.html', app, document);
+  SwaggerModule.setup("swagger-ui.html", app, document);
 
   await app.listen(8080);
 });

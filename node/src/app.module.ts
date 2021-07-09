@@ -1,9 +1,10 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 import { UserModule } from "./user/user.module";
 import { VehicleModule } from "./vehicle/vehicle.module";
+import { ValidatorModule } from "./validator.module";
 
 @Module({
   imports: [
@@ -14,10 +15,11 @@ import { VehicleModule } from "./vehicle/vehicle.module";
       autoLoadEntities: true
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'static/admin'),
+      rootPath: join(__dirname, "..", "static/admin")
     }),
     UserModule,
+    ValidatorModule,
     VehicleModule
   ]
 })
-export class AppModule { }
+export class AppModule {}

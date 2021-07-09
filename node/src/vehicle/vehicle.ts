@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-
 @Entity({
   name: "vehicles"
 })
@@ -7,21 +6,21 @@ export class Vehicle {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   licensePlate: string;
 
-  @Column()
+  @Column({ nullable: false })
   vin: string;
 
-  @Column()
+  @Column({ nullable: false })
   model: string;
 
-  @Column()
+  @Column({ nullable: false })
   active: boolean;
 
-  @Column()
+  @Column({ nullable: false })
   color: string;
 
-  @Column()
+  @Column({ nullable: false })
   validTill: Date;
 }
