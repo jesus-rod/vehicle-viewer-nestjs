@@ -20,7 +20,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({}) => {
   return (
     <nav className="px-3 mt-6">
       <div className="space-y-1">
-        {navigation.map((item, index) => (
+        {navigation.map((item) => (
           <a
             key={item.name}
             onClick={handleClick}

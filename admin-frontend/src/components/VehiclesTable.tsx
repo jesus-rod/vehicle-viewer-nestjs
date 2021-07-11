@@ -1,4 +1,3 @@
-import { TruckIcon } from "@heroicons/react/solid";
 import React from "react";
 import { TVehicleList } from "../pages/Home";
 
@@ -36,7 +35,7 @@ export const VehiclesTable: React.FC<VehiclesTableProps> = ({ vehicles }) => {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Model
+                    Model / Color
                   </th>
                   <th
                     scope="col"

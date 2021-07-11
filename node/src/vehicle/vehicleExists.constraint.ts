@@ -1,5 +1,4 @@
 import {
-  ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface
 } from "class-validator";
@@ -15,7 +14,7 @@ export class VehiclePlateDoesNotExist implements ValidatorConstraintInterface {
     @InjectRepository(Vehicle) private repository: Repository<Vehicle>
   ) {}
 
-  async validate(licensePlate: string, args: ValidationArguments) {
+  async validate(licensePlate: string) {
     const vehicle = await this.repository.findOne({
       licensePlate: licensePlate
     });

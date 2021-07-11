@@ -2,7 +2,6 @@ import { Type } from "class-transformer";
 import {
   IsBoolean,
   IsDate,
-  IsHexColor,
   IsNotEmpty,
   Length,
   Validate
@@ -20,15 +19,16 @@ export class VehicleDto {
   minDate: Date;
 
   @IsNotEmpty()
-  @Length(4, 15)
+  @Length(4, 15, {
+    message: "VIN must be between 4 and 15 characters"
+  })
   vin: string;
 
   @IsNotEmpty()
-  @Length(1, 30)
+  @Length(1, 30, { message: "Model must be between 1 and 30 characters" })
   model: string;
 
   @IsNotEmpty()
-  @IsHexColor()
   color: string;
 
   @IsNotEmpty()
@@ -38,13 +38,15 @@ export class VehicleDto {
   @IsNotEmpty()
   @Type(() => Date)
   @IsDate()
-  @IsGreaterThan("minDate", { message: "validTill must be in the future" })
+  @IsGreaterThan("minDate", { message: "Validity date must be in the future" })
   validTill: Date;
 
   @Validate(VehiclePlateDoesNotExist, {
     message: "A vehicle with this license plate already exists"
   })
   @IsNotEmpty()
-  @Length(4, 15)
+  @Length(4, 15, {
+    message: "License plate must be between 4 and 15 characters"
+  })
   licensePlate: string;
 }

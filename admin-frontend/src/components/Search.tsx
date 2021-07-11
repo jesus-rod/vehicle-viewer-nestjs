@@ -1,5 +1,5 @@
 import { SearchIcon } from "@heroicons/react/outline";
-import React, { useState } from "react";
+import React from "react";
 
 interface SearchProps {
   onTextChange: (value: string) => void;

@@ -1,6 +1,5 @@
 import { MainTitle } from "../components/MainTitle";
 import { SideBar } from "../components/SideBar";
-import { SideMenu } from "../components/SideMenu";
 import { SectionTitle } from "../components/SectionTitle";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -8,6 +7,11 @@ import { useEffect, useState } from "react";
 import { Search } from "../components/Search";
 import { UsersTable } from "../components/UsersTable";
 import { VehiclesTable } from "../components/VehiclesTable";
+import {
+  CreationStatus,
+  VehicleCreationDialog,
+} from "../components/VehicleCreationDialog";
+import { Notification } from "../components/Notification";
 
 type User = {
   id: string;
@@ -33,6 +37,8 @@ export default function Home() {
   const [isCreatingVehicle, setIsCreatingVehicle] = useState(false);
   const [users, setUsers] = useState<TUserList>();
   const [vehicles, setVehicles] = useState<TVehicleList>();
+  const [shouldShowNotification, setShouldShowNotification] = useState(false);
+
   useEffect(() => {
     fetchAllUsers();
     fetchAllVehicles();
@@ -71,7 +77,25 @@ export default function Home() {
       });
   };
 
-  const showCreateVehicle = () => {};
+  const showCreateVehicle = () => {
+    setIsCreatingVehicle(true);
+  };
+
+  const handleVehicleDialog = (status: CreationStatus) => {
+    setIsCreatingVehicle(false);
+
+    switch (status) {
+      case CreationStatus.Success:
+        // Update vehicle list
+        fetchAllVehicles();
+        setShouldShowNotification(true);
+        break;
+      case CreationStatus.Failure:
+        break;
+      case CreationStatus.None:
+        break;
+    }
+  };
 
   return (
     <div className="h-screen flex overflow-hidden bg-white">
@@ -106,6 +130,20 @@ export default function Home() {
           </div>
 
           <VehiclesTable vehicles={vehicles} />
+
+          <VehicleCreationDialog
+            isOpen={isCreatingVehicle}
+            onClose={(status) => {
+              handleVehicleDialog(status);
+            }}
+          />
+
+          <Notification
+            shouldShow={shouldShowNotification}
+            onHide={() => {
+              setShouldShowNotification(false);
+            }}
+          />
         </main>
       </div>
     </div>
