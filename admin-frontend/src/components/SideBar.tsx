@@ -2,9 +2,7 @@ import { Menu } from "@headlessui/react";
 import React from "react";
 import { SideMenu } from "./SideMenu";
 
-interface SideBarProps {}
-
-export const SideBar: React.FC<SideBarProps> = ({}) => {
+export const SideBar: React.FC = (props) => {
   return (
     <div className="hidden lg:flex lg:flex-shrink-0">
       <div className="flex flex-col w-64 border-r border-gray-200 pt-5 pb-4 bg-gray-100">
@@ -32,7 +30,7 @@ export const SideBar: React.FC<SideBarProps> = ({}) => {
               </Menu.Button>
             </div>
           </Menu>
-          <SideMenu />
+          {props.children}
         </div>
       </div>
     </div>

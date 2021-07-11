@@ -64,7 +64,6 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
   };
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("--->", data);
     axios
       .post("http://localhost:8080/api/v1/vehicles", {
         licensePlate: data.licensePlate,
@@ -77,17 +76,13 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
       .then((response) => {
         if (response.status === 201) {
           handleClose(CreationStatus.Success);
-          console.log("--->", response.data);
           response.data && setBackendErrors(response.data);
         }
       })
-
-      //TODO handle errors
       .catch((err: Error | AxiosError) => {
         if (axios.isAxiosError(err)) {
-          console.log("lee", err.response?.data.message);
           const errors: string[] = [];
-          err.response?.data.message.map(
+          err.response?.data.message.forEach(
             (elem: { constraints: Constraints }) => {
               for (const [, value] of Object.entries(elem.constraints)) {
                 errors.push(value);
@@ -96,7 +91,7 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
           );
           setBackendErrors(errors);
         } else {
-          console.log("loo", err);
+          setBackendErrors(["Unexpected error"]);
         }
       });
   };
@@ -257,7 +252,7 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
                           <option>blue</option>
                           <option>red</option>
                           <option>white</option>
-                          <option>black</option>
+                          <option selected={true}>black</option>
                           <option>gold</option>
                           <option>silver</option>
                         </select>
@@ -285,7 +280,9 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
                           className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md px-4 py-2 my-2 bg-gray-lighter"
                         >
                           <option value={tomorrow}>1 day</option>
-                          <option value={nextMonth}>1 month</option>
+                          <option selected={true} value={nextMonth}>
+                            1 month
+                          </option>
                           <option value={nextYear}>1 year</option>
                         </select>
                         {errors.validTill && (
@@ -310,7 +307,9 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
                           name="active"
                           className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md px-4 py-2 my-2 bg-gray-lighter"
                         >
-                          <option value="true">Active</option>
+                          <option selected={true} value="true">
+                            Active
+                          </option>
                           <option value="false">Inactive</option>
                         </select>
                         {errors.active && (

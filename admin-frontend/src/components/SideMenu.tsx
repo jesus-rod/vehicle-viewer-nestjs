@@ -1,29 +1,70 @@
-import { UserGroupIcon, ViewListIcon } from "@heroicons/react/outline";
-import React from "react";
-
-interface SideMenuProps {}
-
-const navigation = [
-  { name: "Users", href: "#", icon: UserGroupIcon, current: true },
-  { name: "Vehicles", href: "#", icon: ViewListIcon, current: false },
-];
+import {
+  EyeIcon,
+  EyeOffIcon,
+  UserGroupIcon,
+  ViewListIcon,
+} from "@heroicons/react/outline";
+import React, { useState } from "react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const handleClick = () => {
-  console.log("clicked index");
+type NavItem = {
+  name: string;
+  href: string;
+  icon: any;
+  current: boolean;
+};
+const initialNavigation: NavItem[] = [
+  {
+    name: "Users",
+    href: "#",
+    icon: UserGroupIcon,
+    current: true,
+  },
+  {
+    name: "Vehicles",
+    href: "#",
+    icon: ViewListIcon,
+    current: true,
+  },
+];
+
+type MenuProps = {
+  onShowUsers: () => void;
+  onShowVehicles: () => void;
 };
 
-export const SideMenu: React.FC<SideMenuProps> = ({}) => {
+export const SideMenu: React.FC<MenuProps> = ({
+  onShowUsers,
+  onShowVehicles,
+}) => {
+  const [navigation, setNavigation] = useState(initialNavigation);
+
+  const updateNavigation = (index: number) => {
+    console.log("select", index);
+    let updatedNavigation: NavItem[] = [...navigation];
+    updatedNavigation[index].current = !updatedNavigation[index].current;
+    setNavigation(updatedNavigation);
+
+    if (index === 0) {
+      onShowUsers();
+      return;
+    }
+
+    onShowVehicles();
+  };
+
   return (
     <nav className="px-3 mt-6">
       <div className="space-y-1">
-        {navigation.map((item) => (
+        {navigation.map((item, index) => (
           <a
             key={item.name}
-            onClick={handleClick}
+            onClick={() => {
+              updateNavigation(index);
+            }}
             href={item.href}
             className={classNames(
               item.current
@@ -43,6 +84,15 @@ export const SideMenu: React.FC<SideMenuProps> = ({}) => {
               aria-hidden="true"
             />
             {item.name}
+            {item.current ? (
+              <span>
+                <EyeIcon className="px-2 py-2 font-medium" />
+              </span>
+            ) : (
+              <span>
+                <EyeOffIcon className="px-2 py-2 font-medium" />
+              </span>
+            )}
           </a>
         ))}
       </div>

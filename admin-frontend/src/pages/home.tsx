@@ -12,23 +12,8 @@ import {
   VehicleCreationDialog,
 } from "../components/VehicleCreationDialog";
 import { Notification } from "../components/Notification";
-
-type User = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  birthday: string;
-};
-
-type Vehicle = {
-  licensePlate: string;
-  vin: string;
-  color: string;
-  model: string;
-  active: boolean;
-  validTill: Date;
-};
+import { User, Vehicle } from "../types/types";
+import { SideMenu } from "../components/SideMenu";
 
 export type TUserList = User[];
 export type TVehicleList = Vehicle[];
@@ -38,6 +23,8 @@ export default function Home() {
   const [users, setUsers] = useState<TUserList>();
   const [vehicles, setVehicles] = useState<TVehicleList>();
   const [shouldShowNotification, setShouldShowNotification] = useState(false);
+  const [showUsers, setShowUsers] = useState(true);
+  const [showVehicles, setShowVehicles] = useState(true);
 
   useEffect(() => {
     fetchAllUsers();
@@ -51,6 +38,7 @@ export default function Home() {
         setUsers(response.data);
       })
       .catch((error) => {
+        //TODO show toast on fetch error
         console.log("--->", error);
       });
   };
@@ -62,6 +50,7 @@ export default function Home() {
         response.data && setVehicles(response.data);
       })
       .catch((error) => {
+        //TODO show toast on fetch error
         console.log("--->", error);
       });
   };
@@ -73,7 +62,7 @@ export default function Home() {
         response.data && setUsers(response.data);
       })
       .catch((error) => {
-        console.log("--->", error);
+        //TODO show toast on fetch error
       });
   };
 
@@ -86,7 +75,6 @@ export default function Home() {
 
     switch (status) {
       case CreationStatus.Success:
-        // Update vehicle list
         fetchAllVehicles();
         setShouldShowNotification(true);
         break;
@@ -97,39 +85,57 @@ export default function Home() {
     }
   };
 
+  const onShowUsers = () => {
+    setShowUsers(!showUsers);
+  };
+
+  const onShowVehicles = () => {
+    setShowVehicles(!showVehicles);
+  };
+
   return (
     <div className="h-screen flex overflow-hidden bg-white">
-      <SideBar />
+      <SideBar>
+        <SideMenu onShowUsers={onShowUsers} onShowVehicles={onShowVehicles} />
+      </SideBar>
 
       <div className="flex flex-col w-0 flex-1 overflow-hidden">
         <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none">
           <MainTitle />
-          <SectionTitle title="Users" />
-          <Search
-            onTextChange={fetchUsersByLastName}
-            onEmptyText={fetchAllUsers}
-          />
-          <UsersTable users={users} />
 
-          <div className="sm:flex sm:items-center sm:justify-between pr-4">
-            <SectionTitle title="Vehicles" />
-            <div className="mt-8 flex">
-              <button
-                type="button"
-                className="items-center px-4 py-2 
-                border border-transparent
-                shadow-sm text-sm font-medium
-                rounded-md text-white bg-red-darker 
-                hover:bg-red-default focus:outline-none
-                focus:ring-0 focus:ring-offset-0"
-                onClick={showCreateVehicle}
-              >
-                Create
-              </button>
+          {showUsers && (
+            <div>
+              <SectionTitle title="Users" />
+              <Search
+                onTextChange={fetchUsersByLastName}
+                onEmptyText={fetchAllUsers}
+              />
+              <UsersTable users={users} />
             </div>
-          </div>
+          )}
 
-          <VehiclesTable vehicles={vehicles} />
+          {showVehicles && (
+            <div>
+              <div className="sm:flex sm:items-center sm:justify-between pr-4">
+                <SectionTitle title="Vehicles" />
+                <div className="mt-8 flex">
+                  <button
+                    type="button"
+                    className="items-center px-4 py-2
+                    border border-transparent
+                    shadow-sm text-sm font-medium
+                    rounded-md text-white bg-red-darker
+                    hover:bg-red-default focus:outline-none
+                    focus:ring-0 focus:ring-offset-0"
+                    onClick={showCreateVehicle}
+                  >
+                    New Vehicle
+                  </button>
+                </div>
+              </div>
+              <VehiclesTable vehicles={vehicles} />
+            </div>
+          )}
 
           <VehicleCreationDialog
             isOpen={isCreatingVehicle}

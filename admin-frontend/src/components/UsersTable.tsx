@@ -1,7 +1,5 @@
 import React from "react";
 import { TUserList } from "../pages/Home";
-import { ActionMenu } from "./ActionMenu";
-
 interface TableProps {
   users: TUserList | undefined;
 }
@@ -22,7 +20,6 @@ export const UsersTable: React.FC<TableProps> = ({ users }) => {
               <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Email
               </th>
-              <th className="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider" />
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-100">
@@ -43,9 +40,6 @@ export const UsersTable: React.FC<TableProps> = ({ users }) => {
                   </td>
                   <td className="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
                     {user.email}
-                  </td>
-                  <td className="pr-6">
-                    <ActionMenu />
                   </td>
                 </tr>
               ))
