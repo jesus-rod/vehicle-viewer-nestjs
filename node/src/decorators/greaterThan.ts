@@ -19,11 +19,6 @@ export function IsGreaterThan(
         validate(value: any, args: ValidationArguments) {
           const [relatedPropertyName] = args.constraints;
           const relatedValue = args.object[relatedPropertyName];
-          console.log(typeof value);
-          console.log(typeof relatedValue);
-          console.log("is ", value);
-          console.log("bigger than", relatedValue);
-          console.log(value > relatedValue);
           return value > relatedValue;
         }
       }

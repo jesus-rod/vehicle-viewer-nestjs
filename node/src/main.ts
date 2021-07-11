@@ -32,6 +32,8 @@ db.serialize(async () => {
 db.close(async () => {
   const app = (await NestFactory.create(AppModule)).setGlobalPrefix("api/v1");
 
+  app.enableCors();
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
