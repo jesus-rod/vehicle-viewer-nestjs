@@ -2,11 +2,11 @@ import { MainTitle } from "../components/MainTitle";
 import { SideBar } from "../components/SideBar";
 import { SideMenu } from "../components/SideMenu";
 import { SectionTitle } from "../components/SectionTitle";
-import { ActionMenu } from "../components/ActionMenu";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 import { Search } from "../components/Search";
+import { UsersTable } from "../components/UsersTable";
 
 type User = {
   id: string;
@@ -70,59 +70,7 @@ export default function Home() {
             onTextChange={fetchUsersByLastName}
             onEmptyText={fetchAllUsers}
           />
-
-          <div className="mt-8 sm:block">
-            <div className="align-middle inline-block min-w-full border-b border-gray-200">
-              <table className="min-w-full">
-                <thead>
-                  <tr className="border-t border-gray-200">
-                    <th className="px-5 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      <span className="lg:pl-2">Name</span>
-                    </th>
-                    <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Lastname
-                    </th>
-                    <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider" />
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-100">
-                  {users && users.length > 0 ? (
-                    users.map((user) => (
-                      <tr key={user.id}>
-                        <td className="px-6 py-3 max-w-0 w-full whitespace-nowrap text-sm font-medium text-gray-900">
-                          <div className="flex items-center space-x-2 lg:pl-2">
-                            <span>{user.firstName}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-3 text-sm text-gray-500 font-medium">
-                          <div className="flex items-center space-x-2">
-                            <div className="flex flex-shrink-0 -space-x-1">
-                              <span>{user.lastName}</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
-                          {user.email}
-                        </td>
-                        <td className="pr-6">
-                          <ActionMenu />
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td className="px-6 py-3 text-sm text-gray-500 font-medium">
-                        Results not found
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <UsersTable users={users} />
         </main>
       </div>
     </div>
