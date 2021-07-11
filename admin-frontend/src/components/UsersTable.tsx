@@ -1,7 +1,8 @@
 import React from "react";
-import { TUserList } from "../pages/Home";
+import { TUserList } from "../types/types";
+
 interface TableProps {
-  users: TUserList | undefined;
+  users: TUserList;
 }
 
 export const UsersTable: React.FC<TableProps> = ({ users }) => {
@@ -23,7 +24,7 @@ export const UsersTable: React.FC<TableProps> = ({ users }) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-100">
-            {users && users.length > 0 ? (
+            {Array.isArray(users) && users.length > 0 ? (
               users.map((user) => (
                 <tr key={user.id}>
                   <td className="px-6 py-3 max-w-0 w-full whitespace-nowrap text-sm font-medium text-gray-900">

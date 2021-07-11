@@ -1,28 +1,23 @@
 import { MainTitle } from "../components/MainTitle";
 import { SideBar } from "../components/SideBar";
 import { SectionTitle } from "../components/SectionTitle";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
 import { Search } from "../components/Search";
 import { UsersTable } from "../components/UsersTable";
 import { VehiclesTable } from "../components/VehiclesTable";
-import {
-  CreationStatus,
-  VehicleCreationDialog,
-} from "../components/VehicleCreationDialog";
+import { VehicleCreationDialog } from "../components/VehicleCreationDialog";
 import { Notification } from "../components/Notification";
-import { User, Vehicle } from "../types/types";
+import { RequestStatus, TUserList, TVehicleList } from "../types/types";
 import { SideMenu } from "../components/SideMenu";
-
-export type TUserList = User[];
-export type TVehicleList = Vehicle[];
 
 export default function Home() {
   const [isCreatingVehicle, setIsCreatingVehicle] = useState(false);
   const [users, setUsers] = useState<TUserList>();
   const [vehicles, setVehicles] = useState<TVehicleList>();
-  const [shouldShowNotification, setShouldShowNotification] = useState(false);
+  const [shouldShowNotification, setShouldShowNotification] =
+    useState<RequestStatus>(RequestStatus.None);
   const [showUsers, setShowUsers] = useState(true);
   const [showVehicles, setShowVehicles] = useState(true);
 
@@ -35,11 +30,7 @@ export default function Home() {
     axios
       .get<TUserList>("http://localhost:8080/api/v1/users")
       .then((response) => {
-        setUsers(response.data);
-      })
-      .catch((error) => {
-        //TODO show toast on fetch error
-        console.log("--->", error);
+        response.data && setUsers(response.data);
       });
   };
 
@@ -48,10 +39,6 @@ export default function Home() {
       .get<TVehicleList>(`http://localhost:8080/api/v1/vehicles`)
       .then((response) => {
         response.data && setVehicles(response.data);
-      })
-      .catch((error) => {
-        //TODO show toast on fetch error
-        console.log("--->", error);
       });
   };
 
@@ -60,9 +47,6 @@ export default function Home() {
       .get<TUserList>(`http://localhost:8080/api/v1/users/lastname/${lastname}`)
       .then((response) => {
         response.data && setUsers(response.data);
-      })
-      .catch((error) => {
-        //TODO show toast on fetch error
       });
   };
 
@@ -70,17 +54,19 @@ export default function Home() {
     setIsCreatingVehicle(true);
   };
 
-  const handleVehicleDialog = (status: CreationStatus) => {
+  const handleInteractionDialog = (status: RequestStatus) => {
     setIsCreatingVehicle(false);
 
     switch (status) {
-      case CreationStatus.Success:
+      case RequestStatus.Success:
         fetchAllVehicles();
-        setShouldShowNotification(true);
+        setShouldShowNotification(RequestStatus.Success);
         break;
-      case CreationStatus.Failure:
+      case RequestStatus.Failure:
+        setShouldShowNotification(RequestStatus.Failure);
         break;
-      case CreationStatus.None:
+      case RequestStatus.None:
+        setShouldShowNotification(RequestStatus.None);
         break;
     }
   };
@@ -110,7 +96,7 @@ export default function Home() {
                 onTextChange={fetchUsersByLastName}
                 onEmptyText={fetchAllUsers}
               />
-              <UsersTable users={users} />
+              <UsersTable users={users ?? []} />
             </div>
           )}
 
@@ -133,21 +119,21 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <VehiclesTable vehicles={vehicles} />
+              <VehiclesTable vehicles={vehicles ?? []} />
             </div>
           )}
 
           <VehicleCreationDialog
             isOpen={isCreatingVehicle}
             onClose={(status) => {
-              handleVehicleDialog(status);
+              handleInteractionDialog(status);
             }}
           />
 
           <Notification
-            shouldShow={shouldShowNotification}
+            shouldShow={shouldShowNotification !== RequestStatus.None}
             onHide={() => {
-              setShouldShowNotification(false);
+              setShouldShowNotification(RequestStatus.None);
             }}
           />
         </main>

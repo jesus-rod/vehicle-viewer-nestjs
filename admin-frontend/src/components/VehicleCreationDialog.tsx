@@ -3,16 +3,11 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios, { AxiosError } from "axios";
-
-export enum CreationStatus {
-  Success,
-  Failure,
-  None,
-}
+import { RequestStatus } from "../types/types";
 
 interface DialogProps {
   isOpen: boolean;
-  onClose: (status: CreationStatus) => void;
+  onClose: (status: RequestStatus) => void;
 }
 
 const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toString();
@@ -58,7 +53,7 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
     setOpen(isOpen);
   }, [isOpen]);
 
-  const handleClose = (status: CreationStatus) => {
+  const handleClose = (status: RequestStatus) => {
     onClose(status);
     setOpen(false);
   };
@@ -75,7 +70,7 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
       })
       .then((response) => {
         if (response.status === 201) {
-          handleClose(CreationStatus.Success);
+          handleClose(RequestStatus.Success);
           response.data && setBackendErrors(response.data);
         }
       })
@@ -104,7 +99,7 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
         className="fixed z-10 inset-0 overflow-y-auto"
         open={open}
         onClose={() => {
-          handleClose(CreationStatus.None);
+          handleClose(RequestStatus.None);
         }}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -142,7 +137,7 @@ export const VehicleCreationDialog: React.FC<DialogProps> = ({
                   type="button"
                   className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   onClick={() => {
-                    handleClose(CreationStatus.None);
+                    handleClose(RequestStatus.None);
                   }}
                 >
                   <span className="sr-only">Close</span>

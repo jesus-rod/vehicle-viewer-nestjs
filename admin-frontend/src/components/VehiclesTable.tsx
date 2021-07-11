@@ -1,8 +1,8 @@
 import React from "react";
-import { TVehicleList } from "../pages/Home";
+import { TVehicleList } from "../types/types";
 
 interface VehiclesTableProps {
-  vehicles: TVehicleList | undefined;
+  vehicles: TVehicleList;
 }
 
 const formatDate = (date: Date): string => {
@@ -52,7 +52,7 @@ export const VehiclesTable: React.FC<VehiclesTableProps> = ({ vehicles }) => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {vehicles &&
+                {Array.isArray(vehicles) && vehicles.length > 0 ? (
                   vehicles.map((vehicle) => (
                     <tr key={vehicle.licensePlate}>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -93,7 +93,14 @@ export const VehiclesTable: React.FC<VehiclesTableProps> = ({ vehicles }) => {
                         {formatDate(vehicle.validTill)}
                       </td>
                     </tr>
-                  ))}
+                  ))
+                ) : (
+                  <tr>
+                    <td className="px-6 py-3 text-sm text-gray-500 font-medium">
+                      Vehicles not found
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

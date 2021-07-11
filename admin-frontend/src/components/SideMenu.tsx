@@ -43,7 +43,6 @@ export const SideMenu: React.FC<MenuProps> = ({
   const [navigation, setNavigation] = useState(initialNavigation);
 
   const updateNavigation = (index: number) => {
-    console.log("select", index);
     let updatedNavigation: NavItem[] = [...navigation];
     updatedNavigation[index].current = !updatedNavigation[index].current;
     setNavigation(updatedNavigation);
