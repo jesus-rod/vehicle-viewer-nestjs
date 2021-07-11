@@ -70,7 +70,7 @@ export const SideMenu: React.FC<MenuProps> = ({
               item.current
                 ? "bg-gray-200 text-gray-900"
                 : "text-gray-700 hover:text-gray-900 hover:bg-gray-50",
-              "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+              "relative group flex items-center px-2 py-2 text-sm font-medium rounded-md"
             )}
             aria-current={item.current ? "page" : undefined}
           >
@@ -85,11 +85,11 @@ export const SideMenu: React.FC<MenuProps> = ({
             />
             {item.name}
             {item.current ? (
-              <span>
-                <EyeIcon className="px-2 py-2 font-medium" />
+              <span className="absolute right-5">
+                <EyeIcon className=" px-2 py-2 font-medium" />
               </span>
             ) : (
-              <span>
+              <span className="absolute right-5">
                 <EyeOffIcon className="px-2 py-2 font-medium" />
               </span>
             )}
