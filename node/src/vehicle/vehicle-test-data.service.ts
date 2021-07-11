@@ -18,6 +18,7 @@ export class VehicleTestDataService {
 
   private async insertTestVehicles() {
     const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
     await this.vehicleRepository.insert(
       Builder<Vehicle>()
@@ -38,6 +39,17 @@ export class VehicleTestDataService {
         .active(true)
         .vin("1234-4321")
         .validTill(tomorrow)
+        .build()
+    );
+
+    await this.vehicleRepository.insert(
+      Builder<Vehicle>()
+        .licensePlate("IN-5679")
+        .model("A5")
+        .color("black")
+        .active(false)
+        .vin("1234-2343")
+        .validTill(yesterday)
         .build()
     );
   }
