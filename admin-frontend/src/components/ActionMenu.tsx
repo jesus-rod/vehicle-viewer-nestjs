@@ -1,9 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
-import {
-  DotsVerticalIcon,
-  PencilAltIcon,
-  TrashIcon,
-} from "@heroicons/react/solid";
+import { EyeIcon } from "@heroicons/react/outline";
+import { DotsVerticalIcon, TrashIcon } from "@heroicons/react/solid";
 import React, { Fragment } from "react";
 
 interface ActionMenuProps {}
@@ -45,11 +42,11 @@ export const ActionMenu: React.FC<ActionMenuProps> = ({}) => {
                         "group flex items-center px-4 py-2 text-sm"
                       )}
                     >
-                      <PencilAltIcon
+                      <EyeIcon
                         className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
                         aria-hidden="true"
                       />
-                      Edit
+                      View
                     </a>
                   )}
                 </Menu.Item>

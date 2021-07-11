@@ -21,13 +21,13 @@ export const Search: React.FC<SearchProps> = ({
   };
 
   return (
-    <div className="px-3 mt-5">
+    <div className="px-3 mt-5 ">
       <label htmlFor="search" className="sr-only">
         Search
       </label>
       <div className="mt-1 relative rounded-md shadow-sm">
         <div
-          className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+          className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none "
           aria-hidden="true"
         >
           <SearchIcon
@@ -39,7 +39,7 @@ export const Search: React.FC<SearchProps> = ({
           type="text"
           name="search"
           id="search"
-          className="p-4 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md"
+          className="p-4 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-9 sm:text-sm border-gray-00 rounded-md bg-gray-50"
           placeholder="Search by lastname"
           onChange={handleChange}
         />

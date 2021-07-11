@@ -8,11 +8,11 @@ interface TableProps {
 
 export const UsersTable: React.FC<TableProps> = ({ users }) => {
   return (
-    <div className="mt-8 sm:block">
-      <div className="align-middle inline-block min-w-full border-b border-gray-200">
+    <div className="sm:block p-4 ">
+      <div className=" shadow align-middle inline-block min-w-full border-b border-gray-200 sm:rounded-lg">
         <table className="min-w-full">
           <thead>
-            <tr className="border-t border-gray-200">
+            <tr className="border-gray-200">
               <th className="px-5 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <span className="lg:pl-2">Name</span>
               </th>

@@ -12,13 +12,18 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+const handleClick = () => {
+  console.log("clicked index");
+};
+
 export const SideMenu: React.FC<SideMenuProps> = ({}) => {
   return (
     <nav className="px-3 mt-6">
       <div className="space-y-1">
-        {navigation.map((item) => (
+        {navigation.map((item, index) => (
           <a
             key={item.name}
+            onClick={handleClick}
             href={item.href}
             className={classNames(
               item.current
