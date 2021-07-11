@@ -1,36 +1,51 @@
-import { Fragment, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
-import { MenuAlt1Icon, XIcon } from "@heroicons/react/outline";
-
-import {
-  DotsVerticalIcon,
-  PencilAltIcon,
-  TrashIcon,
-  UserAddIcon,
-} from "@heroicons/react/solid";
 import { MainTitle } from "../components/MainTitle";
 import { SideBar } from "../components/SideBar";
 import { SideMenu } from "../components/SideMenu";
 import { SectionTitle } from "../components/SectionTitle";
 import { ActionMenu } from "../components/ActionMenu";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+import { Search } from "../components/Search";
 
 type User = {
   id: string;
-  name: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  birthday: string;
 };
 
-const users: User[] = [
-  {
-    id: "1",
-    name: "Maria",
-    lastname: "Ramirez",
-    email: "maria.ramirez@live.de",
-  },
-];
+export type TUserList = User[];
 
-export default function Example() {
+export default function Home() {
+  const [users, setUsers] = useState<TUserList>();
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
+
+  const fetchAllUsers = () => {
+    axios
+      .get<TUserList>("http://localhost:8080/api/v1/users")
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.log("--->", error);
+      });
+  };
+
+  const fetchUsersByLastName = (lastname: string) => {
+    axios
+      .get<TUserList>(`http://localhost:8080/api/v1/users/lastname/${lastname}`)
+      .then((response) => {
+        response.data && setUsers(response.data);
+      })
+      .catch((error) => {
+        console.log("--->", error);
+      });
+  };
+
   return (
     <div className="h-screen flex overflow-hidden bg-white">
       {/* Static sidebar for desktop */}
@@ -51,9 +66,12 @@ export default function Example() {
           {/* Page title & actions */}
           <MainTitle />
           <SectionTitle title="Users" />
+          <Search
+            onTextChange={fetchUsersByLastName}
+            onEmptyText={fetchAllUsers}
+          />
 
-          {/* Projects table (small breakpoint and up) */}
-          <div className="hidden mt-8 sm:block">
+          <div className="mt-8 sm:block">
             <div className="align-middle inline-block min-w-full border-b border-gray-200">
               <table className="min-w-full">
                 <thead>
@@ -71,28 +89,36 @@ export default function Example() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-100">
-                  {users.map((user) => (
-                    <tr key={user.id}>
-                      <td className="px-6 py-3 max-w-0 w-full whitespace-nowrap text-sm font-medium text-gray-900">
-                        <div className="flex items-center space-x-2 lg:pl-2">
-                          <span>{user.name}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-3 text-sm text-gray-500 font-medium">
-                        <div className="flex items-center space-x-2">
-                          <div className="flex flex-shrink-0 -space-x-1">
-                            <span>{user.lastname}</span>
+                  {users && users.length > 0 ? (
+                    users.map((user) => (
+                      <tr key={user.id}>
+                        <td className="px-6 py-3 max-w-0 w-full whitespace-nowrap text-sm font-medium text-gray-900">
+                          <div className="flex items-center space-x-2 lg:pl-2">
+                            <span>{user.firstName}</span>
                           </div>
-                        </div>
-                      </td>
-                      <td className="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
-                        {user.email}
-                      </td>
-                      <td className="pr-6">
-                        <ActionMenu />
+                        </td>
+                        <td className="px-6 py-3 text-sm text-gray-500 font-medium">
+                          <div className="flex items-center space-x-2">
+                            <div className="flex flex-shrink-0 -space-x-1">
+                              <span>{user.lastName}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
+                          {user.email}
+                        </td>
+                        <td className="pr-6">
+                          <ActionMenu />
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="px-6 py-3 text-sm text-gray-500 font-medium">
+                        Results not found
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
