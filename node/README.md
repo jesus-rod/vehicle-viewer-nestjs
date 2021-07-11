@@ -35,13 +35,7 @@ To start this web application just follow these steps:
 
    ```
 
-2.1 Running the app (frontend)
-Go to the folder admin-frontend on root level
-`bash # development mode $ yarn start`
-
-    Visit localhost:3000 to see the app running
-
-3. Browse to the following URL for API documentation:
+3) Browse to the following URL for API documentation:
 
    [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 

@@ -44,12 +44,56 @@ export class VehicleTestDataService {
 
     await this.vehicleRepository.insert(
       Builder<Vehicle>()
-        .licensePlate("IN-5679")
-        .model("A5")
+        .licensePlate("IN-5610")
+        .model("Q5")
         .color("black")
         .active(false)
         .vin("1234-2343")
         .validTill(yesterday)
+        .build()
+    );
+
+    await this.vehicleRepository.insert(
+      Builder<Vehicle>()
+        .licensePlate("IN-5611")
+        .model("A5")
+        .color("black")
+        .active(true)
+        .vin("1234-5555")
+        .validTill(tomorrow)
+        .build()
+    );
+
+    await this.vehicleRepository.insert(
+      Builder<Vehicle>()
+        .licensePlate("IN-5655")
+        .model("A8")
+        .color("gold")
+        .active(false)
+        .vin("1234-6666")
+        .validTill(yesterday)
+        .build()
+    );
+
+    await this.vehicleRepository.insert(
+      Builder<Vehicle>()
+        .licensePlate("IN-6589")
+        .model("Q7")
+        .color("blue")
+        .active(false)
+        .vin("1234-7777")
+        .validTill(yesterday)
+        .build()
+    );
+
+    await this.vehicleRepository.insert(
+      Builder<Vehicle>()
+        .licensePlate("IN-5680")
+        .model("R8")
+        .color("black")
+        .active(true)
+        .vin("1234-8888")
+        .validTill(tomorrow)
         .build()
     );
   }
