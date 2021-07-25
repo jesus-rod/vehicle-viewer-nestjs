@@ -1,3 +1,9 @@
+Full stack repo 
+
+-go to the node folder for a nestjs backend project
+
+-go to the admin-frontend folder to run a frontend react app
+
 ### Dev Notes
 
 1.  Running the app (frontend)
