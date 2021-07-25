@@ -1,8 +1,5 @@
 
-# Created by https://www.gitignore.io/api/git,node,java,linux,macos,gradle,windows,eclipse
-# Edit at https://www.gitignore.io/?templates=git,node,java,linux,macos,gradle,windows,eclipse
 
-### Eclipse ###
 .metadata
 bin/
 tmp/
